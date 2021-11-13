@@ -13,7 +13,7 @@ app
   .set("view engine", "ejs")
   .set("views", "views")
   .get("/", (r) => r.res.render("./index"))
-  .post("/size2json", img.single("file"), async (r) => {
+  .post("/size2json", img.single("image"), async (r) => {
     const tempPath = r.file.path;
     sizeOf(tempPath, function (err, dimensions) {
       r.res.send({
@@ -23,6 +23,6 @@ app
     });
   })
   .all("/login", (r) => r.res.send("alexisson"))
-  .listen(process.env.PORT || 443, () => {
+  .listen(process.env.PORT || 3000, () => {
     console.log("Server is working");
   });

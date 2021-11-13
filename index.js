@@ -23,6 +23,6 @@ app
     });
   })
   .all("/login", (r) => r.res.send("alexisson"))
-  .listen(3000, () => {
-    console.log("Server is woerking");
+  .listen(process.env.PORT || 443, () => {
+    console.log("Server is working");
   });

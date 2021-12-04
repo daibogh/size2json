@@ -33,21 +33,22 @@ app
         r.res.download("./img/output.png");
       });
   })
-  .all("/wordpress/", async (req, res) => {
+  .get("/wordpress/", async (req, res, next) => {
     const content = req.query.content;
-    const token = await axios.post(
+    const response = await axios.post(
       "https://wordpress.kodaktor.ru/wp-json/jwt-auth/v1/token",
       { username: "gossjsstudent2017", password: "|||123|||456" }
     );
-    const response = await axios.post(
+    const token = response.data.token;
+    const WPresponse = await axios.post(
       `https://wordpress.kodaktor.ru/wp-json/wp/v2/posts/`,
 
       { content, title: "alexisson", status: "publish" },
       {
-        headers: { Authorization: `Bearer ${token.data.token}` },
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
-    res.send(response.data.id);
+    res.send(WPresponse.data.id + "");
   })
   .all("/log", (r) => {
     console.log(r.params.data);

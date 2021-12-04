@@ -43,8 +43,7 @@ app
           Authorization: `Bearer ${response.data.token}`,
         };
         let data = {
-          title: "Ivan Shirokov",
-          content: "Иван Широков",
+          title: "alexisson",
           status: "publish",
         };
         axios

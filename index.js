@@ -4,6 +4,7 @@ import sizeOf from "image-size";
 import sharp from "sharp";
 import fs from "fs";
 import axios from "axios";
+import crypto from "crypto";
 
 const app = express();
 
@@ -12,6 +13,7 @@ const img = multer({
 });
 
 app
+  .use(express.urlencoded({ extended: true }))
   .set("view engine", "ejs")
   .set("views", "views")
   .get("/", (r) => r.res.render("./index"))
@@ -55,12 +57,12 @@ app
     console.log(r.headers);
   })
   .get("/sha1", (r) => {
-    r.res.render("./sha");
+    r.res.render("./sha", { value: "" });
   })
   .post("/sha1", (r) => {
-    let data = r.body.inp;
-    let data_crypto = crypto.subtle.digest("SHA-1", data);
-    console.log(data_crypto);
+    r.res.render("./sha", {
+      value: crypto.createHash("sha1").update(r.body.inp).digest("hex"),
+    });
   })
   .all("/login", (r) => r.res.send("alexisson"))
   .listen(process.env.PORT || 3000, () => {

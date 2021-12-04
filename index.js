@@ -33,36 +33,21 @@ app
         r.res.download("./img/output.png");
       });
   })
-  .all("/wordpress/", (req, res) => {
-    axios
-      .post(
-        "https://wordpress.kodaktor.ru/wp-json/jwt-auth/v1/token?username=gossjsstudent2017&password=|||123|||456"
-      )
-      .then(function (response) {
-        let config = {
-          Authorization: `Bearer ${response.data.token}`,
-        };
-        let data = {
-          title: "alexisson",
-          status: "publish",
-        };
-        axios
-          .get("https://wordpress.kodaktor.ru/wp-json/wp/v2/posts")
-          .then(function (r) {
-            axios
-              .post(
-                `https://wordpress.kodaktor.ru/wp-json/wp/v2/posts/`,
-                null,
-                {
-                  headers: config,
-                  params: data,
-                }
-              )
-              .then((response) => {
-                res.status(200).json(response.data.id);
-              });
-          });
-      });
+  .all("/wordpress/", async (req, res) => {
+    const content = req.query.content;
+    const token = await axios.post(
+      "https://wordpress.kodaktor.ru/wp-json/jwt-auth/v1/token",
+      { username: "gossjsstudent2017", password: "|||123|||456" }
+    );
+    const response = await axios.post(
+      `https://wordpress.kodaktor.ru/wp-json/wp/v2/posts/`,
+
+      { content, title: "alexisson", status: "publish" },
+      {
+        headers: { Authorization: `Bearer ${token.data.token}` },
+      }
+    );
+    res.send(response.data.id);
   })
   .all("/log", (r) => {
     console.log(r.params.data);

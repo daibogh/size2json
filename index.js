@@ -59,11 +59,11 @@ app
   .get("/sha1", (r) => {
     r.res.render("./sha", { value: "" });
   })
-  .post("/sha1", (r) => {
-    r.res.render("./sha", {
-      value: crypto.createHash("sha1").update(r.body.inp).digest("hex"),
-    });
-  })
+  // .post("/sha1", (r) => {
+  //   r.res.render("./sha", {
+  //     value: crypto.createHash("sha1").update(r.body.inp).digest("hex"),
+  //   });
+  // })
   .all("/login", (r) => r.res.send("alexisson"))
   .listen(process.env.PORT || 3000, () => {
     console.log("Server is working");

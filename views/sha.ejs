@@ -5,12 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script>
+      async function sha() {
+        const result = Array.from(
+          new Uint8Array(
+            await crypto.subtle.digest(
+              "SHA-1",
+              new TextEncoder("utf-8").encode(
+                document.getElementById("inp").value
+              )
+            )
+          )
+        )
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("");
+        document.getElementById("inp").value = result;
+      }
+    </script>
   </head>
   <body>
     <h4>alexisson</h4>
-    <form method="post" action="/sha1">
-      <input name="inp" id="inp" value="<%= value %> " />
-      <button id="bt" name="bt">Посчитать</button>
-    </form>
+    <input name="inp" id="inp" />
+    <button id="bt" name="bt" onclick="sha()">Посчитать</button>
   </body>
 </html>
